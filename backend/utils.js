@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const generateToken = (user) => {
   return jwt.sign(
@@ -9,7 +12,7 @@ export const generateToken = (user) => {
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
     },
-    process.env.JWT_SECRET,
+    '' + process.env.JWT_KEY,
     {
       expiresIn: '30d',
     }
@@ -21,7 +24,7 @@ export const isAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXX
     jwt.verify(
       token,
-      process.env.JWT_SECRET || 'somethingsecret',
+      '' + process.env.JWT_KEY || 'somethingsecret',
       (err, decode) => {
         if (err) {
           res.status(401).send({ message: 'Invalid Token' });
