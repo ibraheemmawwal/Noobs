@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import { signout } from './actions/userActions';
 import AdminRoute from './components/AdminRoute';
 import PrivateRoute from './components/PrivateRoute';
@@ -91,22 +91,24 @@ function App() {
           </div>
         </header>
         <main>
-          <Route path="/cart/:id?" component={CartScreen}></Route>
-          <Route path="/signin" component={SigninScreen}></Route>
-          <Route path="/register" component={RegisterScreen}></Route>
-          <Route path="/shipping" component={ShippingAddressScreen}></Route>
-          <Route path="/payment" component={PaymentMethodScreen}></Route>
-          <Route path="/placeorder" component={PlaceOrderScreen}></Route>
-          <Route path="/product/:id" component={ProductScreen} exact></Route>
-          <Route
-            path="/product/:id/edit"
-            component={ProductEditScreen}
-            exact
-          ></Route>
-          <Route path="/order/:id" component={OrderScreen}></Route>
-          <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
-          <Route path="/" component={HomeScreen} exact></Route>
-          {/* <Route
+          <Switch>
+            <Route path="/cart/:id?" component={CartScreen}></Route>
+            <Route path="/signin" component={SigninScreen}></Route>
+            <Route path="/register" component={RegisterScreen}></Route>
+            <Route path="/shipping" component={ShippingAddressScreen}></Route>
+            <Route path="/payment" component={PaymentMethodScreen}></Route>
+            <Route path="/placeorder" component={PlaceOrderScreen}></Route>
+            <Route path="/product/:id" component={ProductScreen} exact></Route>
+            <Route
+              path="/product/:id/edit"
+              component={ProductEditScreen}
+              exact
+            ></Route>
+            <Route path="/order/:id" component={OrderScreen}></Route>
+            <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
+            <Route path="/" component={HomeScreen} exact></Route>
+
+            {/* <Route
             path="/search/name/:name?"
             component={SearchScreen}
             exact
@@ -127,47 +129,23 @@ function App() {
             exact
           ></Route> */}
 
-          <PrivateRoute
-            path="/profile"
-            component={ProfileScreen}
-          ></PrivateRoute>
-          {/* <PrivateRoute path="/map" component={MapScreen}></PrivateRoute> */}
+            <PrivateRoute
+              path="/profile"
+              component={ProfileScreen}
+            ></PrivateRoute>
 
-          <AdminRoute
-            path="/productlist"
-            component={ProductListScreen}
-            exact
-          ></AdminRoute>
-          {/* <AdminRoute
-            path="/productlist/pageNumber/:pageNumber"
-            component={ProductListScreen}
-            exact
-          ></AdminRoute> */}
-          <AdminRoute
-            path="/orderlist"
-            component={OrderListScreen}
-            exact
-          ></AdminRoute>
-          {/* <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute> */}
-          {/* <AdminRoute
-            path="/user/:id/edit"
-            component={UserEditScreen}
-          ></AdminRoute> */}
-          {/* <AdminRoute
-            path="/dashboard"
-            component={DashboardScreen}
-          ></AdminRoute>
-          <AdminRoute path="/support" component={SupportScreen}></AdminRoute> */}
+            <AdminRoute
+              path="/productlist"
+              component={ProductListScreen}
+              exact
+            ></AdminRoute>
 
-          {/* <SellerRoute
-            path="/productlist/seller"
-            component={ProductListScreen}
-          ></SellerRoute>
-          <SellerRoute
-            path="/orderlist/seller"
-            component={OrderListScreen}
-          ></SellerRoute> */}
-
+            <AdminRoute
+              path="/orderlist"
+              component={OrderListScreen}
+              exact
+            ></AdminRoute>
+          </Switch>
           {/* <Route path="/" component={HomeScreen} exact></Route> */}
         </main>
         <footer className="row center">©️All right reserved</footer>

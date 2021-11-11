@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 export default function PrivateRoute({ component: Component, ...rest }) {
   const userSignin = useSelector((state) => state.userSignin);
@@ -12,7 +12,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
         userInfo ? (
           <Component {...props}></Component>
         ) : (
-          <Redirect to="/signin" />
+          this.props.history.push('/signin')
         )
       }
     ></Route>
