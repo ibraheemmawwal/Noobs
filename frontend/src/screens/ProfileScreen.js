@@ -117,7 +117,7 @@ export default function ProfileScreen() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               ></input>
             </div>
-            {/* {user.isSeller && (
+            {user.isSeller && (
               <>
                 <h2>Seller</h2>
                 <div>
@@ -151,7 +151,7 @@ export default function ProfileScreen() {
                   ></input>
                 </div>
               </>
-            )} */}
+            )}
             <div>
               <label />
               <button className="primary" type="submit">

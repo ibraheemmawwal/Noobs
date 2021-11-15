@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  // closePaymentModal,
+  closePaymentModal,
   FlutterWaveButton,
 } from 'flutterwave-react-v3';
 import { useSelector } from 'react-redux';
@@ -34,11 +34,11 @@ export default function App() {
     ...config,
     text: 'Pay with Flutterwave!',
     callback: (paymentResult) => {
-      console.log(paymentResult.customer.email);
+      console.log(paymentResult);
       // setTimeout(() => {
       //   window.location.replace(`https://localhost:3000/order/${order._id}`);
       // }, 2500);
-      // closePaymentModal();
+      closePaymentModal();
     },
     onClose: () => {},
   };

@@ -1,7 +1,7 @@
 import Axios from 'axios';
-// import { PayPalButton } from "react-paypal-button-v2";
+import { PayPalButton } from "react-paypal-button-v2";
 import Flutterwave from '../components/Flutterwave';
-// import { FlutterWaveButton } from "flutterwave-react-v3";
+import { FlutterwaveButton } from 'react-flutterwave-button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -38,10 +38,11 @@ export default function OrderScreen(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     const addFlutterWaveScript = async () => {
-      const { data } = await Axios.get('/api/config/flutterwave');
+      // const { data } = await Axios.get('/api/config/flutterwave');
       const script = document.createElement('script');
       script.type = 'text/javascript';
-      script.src = `https://checkout.flutterwave.com/v3.js?client-id=${data}`;
+      // script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+      script.src = `https://checkout.flutterwave.com/v3.js`;
       script.async = true;
       script.onload = () => {
         setSdkReady(true);
@@ -197,10 +198,47 @@ export default function OrderScreen(props) {
                         <MessageBox variant="danger">{errorPay}</MessageBox>
                       )}
                       {loadingPay && <LoadingBox></LoadingBox>}
+                <FlutterwaveButton
+                
+                      buttonText={"Pay with Flutterwave!"} 
+                      // buttonChildComponent={<MadamDescendant/>} 
+                      style={{changeYourStyle: "doLikeThat" }} 
+                      className={"jeleosimi"} 
+                  flutterProps={
+              {
+                public_key: "FLWPUBK_TEST-5eb661d4aa1341d356cbaef86bb8345e-X",
+                tx_ref: Date.now(),
+                amount:order.totalPrice,
+                currency: "NGN",
+                country: "NG",
+                payment_options: "card,mobilemoney,ussd",
+                customer: {
+                   email: order.shippingAddress.email,
+                    phonenumber: order.shippingAddress.mobileNumber,
+                    name: order.shippingAddress.fullName,
+                },
+                callback: function (paymentResult) { // specified callback function
+                    console.log(paymentResult);
+                    if(paymentResult.status === "successful"){
+                      
+                    dispatch(payOrder(order, paymentResult))
 
-                      <Flutterwave onSuccess={successPaymentHandler} />
-                    </>
-                  )}
+                  
+                    }
+                   
+                },
+                customizations: {
+                    title: "Noobs",
+                    description: "Payment for items in cart",
+                   
+                },
+            }
+                  }
+                   onSuccess={successPaymentHandler}
+        />
+         </> 
+        )}
+                
                 </li>
               )}
               {userInfo.isAdmin && order.isPaid && !order.isDelivered && (

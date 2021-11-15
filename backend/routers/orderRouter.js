@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-import { isAdmin, isAuth } from '../utils.js';
+import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 // import User from '../models/userModel.js';
 // import Product from '../models/productModel.js';
 
@@ -10,9 +10,14 @@ const orderRouter = express.Router();
 orderRouter.get(
   '/',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'name');
+    const seller = req.query.seller || '';
+    const sellerFilter = seller ? { seller } : {};
+    const orders = await Order.find({ ...sellerFilter }).populate(
+      'user',
+      'name'
+    );
     res.send(orders);
   })
 );
@@ -34,7 +39,7 @@ orderRouter.post(
       res.status(400).send({ message: 'Cart is empty' });
     } else {
       const order = new Order({
-        // seller: req.body.orderItems[0].seller,
+        seller: req.body.orderItems[0].seller,
         orderItems: req.body.orderItems,
         shippingAddress: req.body.shippingAddress,
         paymentMethod: req.body.paymentMethod,
@@ -70,35 +75,16 @@ orderRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
-
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
       order.paymentResult = {
-        id: req.body.transaction_id,
+        id: req.body.id,
         status: req.body.status,
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
-
       const updatedOrder = await order.save();
-      //   mailgun()
-      //     .messages()
-      //     .send(
-      //       {
-      //         from: 'Amazona <amazona@mg.yourdomain.com>',
-      //         to: `${order.user.name} <${order.user.email}>`,
-      //         subject: `New order ${order._id}`,
-      //         html: payOrderEmailTemplate(order),
-      //       },
-      //       (error, body) => {
-      //         if (error) {
-      //           console.log(error);
-      //         } else {
-      //           console.log(body);
-      //         }
-      //       }
-      //     );
       res.send({ message: 'Order Paid', order: updatedOrder });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
