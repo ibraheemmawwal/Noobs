@@ -31,7 +31,13 @@ app.use('/api/orders', orderRouter);
 //   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
 // });
 app.get('/api/config/flutterwave', (req, res) => {
-  res.send(process.env.FLUTTERWAVE_PUBLIC_KEY || "sb");
+  res.send(process.env.FLUTTERWAVE_PUBLIC_KEY || 'sb');
+});
+
+app.get('/api/config/google', (req, res) => {
+  res.send(
+    process.env.GOOGLE_API_KEY || 'AIzaSyDOg5Q42R7PyfhSwQs7bizA_Ze4h1yybXI'
+  );
 });
 
 const __dirname = path.resolve();

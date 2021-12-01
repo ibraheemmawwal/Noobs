@@ -9,6 +9,7 @@ import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 export default function ProductEditScreen(props) {
   const productId = props.match.params.id;
   const [name, setName] = useState('');
+  const [sellerName, setSellerName] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
   const [category, setCategory] = useState('');
@@ -26,16 +27,24 @@ export default function ProductEditScreen(props) {
     success: successUpdate,
   } = productUpdate;
 
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (successUpdate) {
-      props.history.push('/productlist');
+      if (userInfo.isAdmin === 'true') {
+        props.history.push('/productlist');
+      } else {
+        props.history.push('/productlist/seller');
+      }
     }
     if (!product || product._id !== productId || successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(detailsProduct(productId));
     } else {
       setName(product.name);
+      setSellerName(product.sellerName);
       setPrice(product.price);
       setImage(product.image);
       setCategory(product.category);
@@ -43,7 +52,14 @@ export default function ProductEditScreen(props) {
       setBrand(product.brand);
       setDescription(product.description);
     }
-  }, [product, dispatch, productId, successUpdate, props.history]);
+  }, [
+    product,
+    dispatch,
+    productId,
+    successUpdate,
+    props.history,
+    userInfo.isAdmin,
+  ]);
   const submitHandler = (e) => {
     e.preventDefault();
     // TODO: dispatch update product
@@ -51,6 +67,7 @@ export default function ProductEditScreen(props) {
       updateProduct({
         _id: productId,
         name,
+        sellerName,
         price,
         image,
         category,
@@ -64,8 +81,8 @@ export default function ProductEditScreen(props) {
   const [loadingUpload, setLoadingUpload] = useState(false);
   const [errorUpload, setErrorUpload] = useState('');
 
-  const userSignin = useSelector((state) => state.userSignin);
-  const { userInfo } = userSignin;
+  // const userSignin = useSelector((state) => state.userSignin);
+  // const { userInfo } = userSignin;
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
@@ -110,6 +127,18 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </div>
+
+            <div>
+              <label htmlFor="sellerName">Seller Name</label>
+              <input
+                id="sellerName"
+                type="text"
+                placeholder="Enter Seller Name"
+                value={sellerName}
+                onChange={(e) => setSellerName(e.target.value)}
+              ></input>
+            </div>
+
             <div>
               <label htmlFor="price">Price</label>
               <input

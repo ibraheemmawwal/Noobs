@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+// import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   listProducts,
@@ -13,6 +14,8 @@ import {
 } from '../constants/productConstants';
 
 export default function ProductListScreen(props) {
+  // const { pageNumber = 1 } = useParams();
+
   const sellerMode = props.match.path.indexOf('/seller') >= 0;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;

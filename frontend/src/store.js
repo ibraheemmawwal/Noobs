@@ -11,18 +11,22 @@ import {
   orderPayReducer,
 } from './reducers/orderReducers';
 import {
+  productCategoryListReducer,
   productCreateReducer,
   productDeleteReducer,
   productDetailsReducer,
   productListReducer,
+  productReviewCreateReducer,
   productUpdateReducer,
 } from './reducers/productReducers';
 import {
+  userAddressMapReducer,
   userDeleteReducer,
   userDetailsReducer,
   userListReducer,
   userRegisterReducer,
   userSigninReducer,
+  userTopSellerListReducer,
   userUpdateProfileReducer,
   userUpdateReducer,
 } from './reducers/userReducers';
@@ -64,10 +68,10 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
-  // userTopSellersList: userTopSellerListReducer,
-  // productCategoryList: productCategoryListReducer,
-  // productReviewCreate: productReviewCreateReducer,
-  // userAddressMap: userAddressMapReducer,
+  userTopSellersList: userTopSellerListReducer,
+  productCategoryList: productCategoryListReducer,
+  productReviewCreate: productReviewCreateReducer,
+  userAddressMap: userAddressMapReducer,
   // orderSummary: orderSummaryReducer,
 });
 

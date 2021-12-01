@@ -1,6 +1,6 @@
-import Axios from 'axios';
-import { PayPalButton } from "react-paypal-button-v2";
-import Flutterwave from '../components/Flutterwave';
+// import Axios from 'axios';
+// import { PayPalButton } from "react-paypal-button-v2";
+// import Flutterwave from '../components/Flutterwave';
 import { FlutterwaveButton } from 'react-flutterwave-button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -198,47 +198,40 @@ export default function OrderScreen(props) {
                         <MessageBox variant="danger">{errorPay}</MessageBox>
                       )}
                       {loadingPay && <LoadingBox></LoadingBox>}
-                <FlutterwaveButton
-                
-                      buttonText={"Pay with Flutterwave!"} 
-                      // buttonChildComponent={<MadamDescendant/>} 
-                      style={{changeYourStyle: "doLikeThat" }} 
-                      className={"jeleosimi"} 
-                  flutterProps={
-              {
-                public_key: "FLWPUBK_TEST-5eb661d4aa1341d356cbaef86bb8345e-X",
-                tx_ref: Date.now(),
-                amount:order.totalPrice,
-                currency: "NGN",
-                country: "NG",
-                payment_options: "card,mobilemoney,ussd",
-                customer: {
-                   email: order.shippingAddress.email,
-                    phonenumber: order.shippingAddress.mobileNumber,
-                    name: order.shippingAddress.fullName,
-                },
-                callback: function (paymentResult) { // specified callback function
-                    console.log(paymentResult);
-                    if(paymentResult.status === "successful"){
-                      
-                    dispatch(payOrder(order, paymentResult))
-
-                  
-                    }
-                   
-                },
-                customizations: {
-                    title: "Noobs",
-                    description: "Payment for items in cart",
-                   
-                },
-            }
-                  }
-                   onSuccess={successPaymentHandler}
-        />
-         </> 
-        )}
-                
+                      <FlutterwaveButton
+                        buttonText={'Pay with Flutterwave!'}
+                        // buttonChildComponent={<MadamDescendant/>}
+                        style={{ changeYourStyle: 'doLikeThat' }}
+                        className={'jeleosimi'}
+                        flutterProps={{
+                          public_key:
+                            'FLWPUBK_TEST-bcf7daceb282b78481dfcf1e3848f73f-X',
+                          tx_ref: Date.now(),
+                          amount: order.totalPrice,
+                          currency: 'NGN',
+                          country: 'NG',
+                          payment_options: 'card,mobilemoney,ussd',
+                          customer: {
+                            email: order.shippingAddress.email,
+                            phonenumber: order.shippingAddress.mobileNumber,
+                            name: order.shippingAddress.fullName,
+                          },
+                          callback: function (paymentResult) {
+                            // specified callback function
+                            console.log(paymentResult);
+                            if (paymentResult.status === 'successful') {
+                              dispatch(payOrder(order, paymentResult));
+                            }
+                          },
+                          customizations: {
+                            title: 'Noobs',
+                            description: 'Payment for items in cart',
+                          },
+                        }}
+                        onSuccess={successPaymentHandler}
+                      />
+                    </>
+                  )}
                 </li>
               )}
               {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
