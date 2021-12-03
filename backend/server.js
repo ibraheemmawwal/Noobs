@@ -17,11 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect(
-  'mongodb+srv://Admin-Awwal:1234@cluster0.j86xu.mongodb.net/noobs',
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
+  'mongodb+srv://Admin-Awwal:1234@cluster0.j86xu.mongodb.net/noobs'
 );
 
 app.use('/api/uploads', uploadRouter);

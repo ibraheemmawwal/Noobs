@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   listProducts,
@@ -14,9 +14,10 @@ import {
 } from '../constants/productConstants';
 
 export default function ProductListScreen(props) {
+  const navigate = useNavigate();
   // const { pageNumber = 1 } = useParams();
-
-  const sellerMode = props.match.path.indexOf('/seller') >= 0;
+  const { pathname } = useLocation();
+  const sellerMode = pathname.indexOf('/seller') >= 0;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
@@ -42,7 +43,7 @@ export default function ProductListScreen(props) {
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      props.history.push(`/product/${createdProduct._id}/edit`);
+      navigate(`/product/${createdProduct._id}/edit`);
     }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
@@ -51,7 +52,7 @@ export default function ProductListScreen(props) {
   }, [
     createdProduct,
     dispatch,
-    props.history,
+    navigate,
     sellerMode,
     successCreate,
     successDelete,
@@ -108,9 +109,7 @@ export default function ProductListScreen(props) {
                   <button
                     type="button"
                     className="small"
-                    onClick={() =>
-                      props.history.push(`/product/${product._id}/edit`)
-                    }
+                    onClick={() => navigate(`/product/${product._id}/edit`)}
                   >
                     Edit
                   </button>

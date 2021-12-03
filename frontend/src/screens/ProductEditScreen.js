@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailsProduct, updateProduct } from '../actions/productActions';
 import LoadingBox from '../components/LoadingBox';
@@ -7,7 +8,10 @@ import MessageBox from '../components/MessageBox';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 export default function ProductEditScreen(props) {
-  const productId = props.match.params.id;
+  const navigate = useNavigate();
+  const params = useParams();
+  const { id: productId } = params;
+
   const [name, setName] = useState('');
   const [sellerName, setSellerName] = useState('');
   const [price, setPrice] = useState('');
@@ -34,9 +38,9 @@ export default function ProductEditScreen(props) {
   useEffect(() => {
     if (successUpdate) {
       if (userInfo.isAdmin === 'true') {
-        props.history.push('/productlist');
+        navigate('/productlist');
       } else {
-        props.history.push('/productlist/seller');
+        navigate('/productlist/seller');
       }
     }
     if (!product || product._id !== productId || successUpdate) {
@@ -52,14 +56,7 @@ export default function ProductEditScreen(props) {
       setBrand(product.brand);
       setDescription(product.description);
     }
-  }, [
-    product,
-    dispatch,
-    productId,
-    successUpdate,
-    props.history,
-    userInfo.isAdmin,
-  ]);
+  }, [product, dispatch, productId, successUpdate, navigate, userInfo.isAdmin]);
   const submitHandler = (e) => {
     e.preventDefault();
     // TODO: dispatch update product

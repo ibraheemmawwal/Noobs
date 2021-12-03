@@ -1,6 +1,4 @@
-// import Axios from 'axios';
-// import { PayPalButton } from "react-paypal-button-v2";
-// import Flutterwave from '../components/Flutterwave';
+import { useParams } from 'react-router-dom';
 import { FlutterwaveButton } from 'react-flutterwave-button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +12,9 @@ import {
 } from '../constants/orderConstants';
 
 export default function OrderScreen(props) {
-  const orderId = props.match.params.id;
+  const params = useParams();
+  const { id: orderId } = params;
+
   const [sdkReady, setSdkReady] = useState(false);
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
