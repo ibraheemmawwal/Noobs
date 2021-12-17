@@ -1,11 +1,31 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import session from 'express-session';
+import passport from 'passport';
+// import passportLocalMongoose from 'passport-local-mongoose';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import User from '../models/userModels.js';
 import { generateToken, isAuth, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
+const app = express();
+
+app.use(
+  session({
+    secret: 'something',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 userRouter.get(
   '/top-sellers',
@@ -55,6 +75,19 @@ userRouter.post(
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
     });
+    // User.register(
+    //   { name: req.body.name, email: req.body.email },
+    //   req.body.password,
+    //   function (err, user) {
+    //     if (err) {
+    //       console.log(err);
+    //       res.redirect('/register');
+    //     } else {
+    //       passport.authenticate('local')(req, res, function () {
+    //         res.redirect('/');
+    //       });
+    //     }
+
     const createdUser = await user.save();
     res.send({
       _id: createdUser._id,
@@ -158,4 +191,5 @@ userRouter.put(
     }
   })
 );
+
 export default userRouter;

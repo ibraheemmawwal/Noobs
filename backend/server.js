@@ -1,6 +1,7 @@
 import http from 'http';
 import { Server } from 'socket.io';
 import express from 'express';
+import session from 'express-session';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -15,6 +16,14 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: 'something',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 mongoose.connect(
   'mongodb+srv://Admin-Awwal:1234@cluster0.j86xu.mongodb.net/noobs'

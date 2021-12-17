@@ -22,12 +22,13 @@ body {
     'main'
     'footer';
   grid-template-columns: 1fr;
-  grid-template-rows: 5rem 1fr 5rem;
+  grid-template-rows: 7rem 1fr 5rem;
   height: 100%;
 }
 header {
   grid-area: header;
   background-color: #203040;
+  flex-wrap: wrap;
 }
 main {
   grid-area: main;
