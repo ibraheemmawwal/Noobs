@@ -1,31 +1,74 @@
 import express from 'express';
+// import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import session from 'express-session';
-import passport from 'passport';
+// import session from 'express-session';
+// import passport from 'passport';
+// import GoogleStrategy from 'passport-google-oauth';
 // import passportLocalMongoose from 'passport-local-mongoose';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import User from '../models/userModels.js';
 import { generateToken, isAuth, isAdmin } from '../utils.js';
+// import findOrCreate from 'mongoose-findorcreate';
+// var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// import findOrCreate from 'mongoose-findorcreate';
 
 const userRouter = express.Router();
-const app = express();
+// const app = express();
 
-app.use(
-  session({
-    secret: 'something',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// const userSchema = new mongoose.Schema(
+//   {
+//     name: { type: String, required: true },
+//     email: { type: String, required: true, unique: true },
+//     password: { type: String, required: true },
+//     isAdmin: { type: Boolean, default: false, required: true },
+//     isSeller: { type: Boolean, default: false, required: true },
+//     seller: {
+//       name: String,
+//       logo: String,
+//       description: String,
+//       rating: { type: Number, default: 0, required: true },
+//       numReviews: { type: Number, default: 0, required: true },
+//     },
+//   },
+//   {
+//     timestamps: true,
+//   }
+// );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// userSchema.plugin(findOrCreate);
 
-passport.use(User.createStrategy());
+// app.use(
+//   session({
+//     secret: 'something',
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// passport.use(User.createStrategy());
+
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.CLIENT_ID,
+//       clientSecret: process.env.CLIENT_SECRET,
+//       callbackURL: 'http://localhost/auth/google/',
+//       userProfileURL: 'https://www.googleapis.com/oauth2/v3/userInfo',
+//     },
+//     function (accessToken, refreshToken, profile, done) {
+//       User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//         return done(err, user);
+//       });
+//     }
+//   )
+// )
 
 userRouter.get(
   '/top-sellers',

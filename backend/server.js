@@ -1,7 +1,8 @@
 import http from 'http';
 import { Server } from 'socket.io';
 import express from 'express';
-import session from 'express-session';
+import { OAuth2Client } from 'google-auth-library';
+// import session from 'express-session';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -12,18 +13,21 @@ import orderRouter from './routers/orderRouter.js';
 import uploadRouter from './routers/uploadRouter.js';
 
 dotenv.config();
+const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  session({
-    secret: 'something',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+const users = [];
+
+// app.use(
+//   session({
+//     secret: 'something',
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 
 mongoose.connect(
   'mongodb+srv://Admin-Awwal:1234@cluster0.j86xu.mongodb.net/noobs'
@@ -37,6 +41,24 @@ app.use('/api/orders', orderRouter);
 // app.get('/api/config/paypal', (req, res) => {
 //   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
 // });
+function upsert(array, item) {
+  const i = array.findIndex((_item) => _item.email === item.email);
+  if (i > -1) array[i] = item;
+  else array.push(item);
+}
+
+app.post('/api/google-login', async (req, res) => {
+  const { token } = req.body;
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+  });
+  const { name, email, picture } = ticket.getPayload();
+  upsert(users, { name, email, picture });
+  res.status(201);
+  res.json({ name, email, picture });
+});
+
 app.get('/api/config/flutterwave', (req, res) => {
   res.send(process.env.FLUTTERWAVE_PUBLIC_KEY || 'sb');
 });
@@ -68,7 +90,6 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 5000;
 const httpServer = http.Server(app);
 const io = new Server(httpServer, { cors: { origin: '*' } });
-const users = [];
 
 io.on('connection', (socket) => {
   console.log('connection', socket.id);

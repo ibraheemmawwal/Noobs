@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import mg from 'mailgun-js';
+// import mg from 'mailgun-js';
 
 dotenv.config();
 
@@ -63,13 +63,14 @@ export const isSellerOrAdmin = (req, res, next) => {
   }
 };
 
-export const mailgun = () =>
-  mg({
-    apiKey: '7b8c9ba8-5f06a2a',
-    domain:
-      process.env.MAILGUN_DOMIAN ||
-      'sandboxe942bbf43f8a4b46a1b800eb28490e4c.mailgun.org',
-  });
+// export const mailgun = () =>
+//   // eslint-disable-next-line no-undef
+//   mg({
+//     apiKey: '7b8c9ba8-5f06a2a',
+//     domain:
+//       process.env.MAILGUN_DOMIAN ||
+//       'sandboxe942bbf43f8a4b46a1b800eb28490e4c.mailgun.org',
+//   });
 
 export const payOrderEmailTemplate = (order) => {
   return `<h1>Thanks for shopping with us</h1>

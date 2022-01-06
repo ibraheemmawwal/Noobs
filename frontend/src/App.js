@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { signout } from './actions/userActions';
 import AdminRoute from './components/AdminRoute';
+import AdminorSellerRoute from './components/AdminorSellerRoute';
 import PrivateRoute from './components/PrivateRoute';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -181,11 +182,7 @@ function App() {
               element={<ProductScreen />}
               exact
             ></Route>
-            <Route
-              path="/product/:id/edit"
-              element={ProductEditScreen}
-              exact
-            ></Route>
+
             <Route path="/signin" element={<SigninScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/shipping" element={<ShippingAddressScreen />}></Route>
@@ -243,6 +240,15 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route
+              path="/product/:id/edit"
+              element={
+                <AdminorSellerRoute>
+                  <ProductEditScreen />
+                </AdminorSellerRoute>
+              }
+            />
+            {/* <Route path="/product/:id/edit" element={ProductEditScreen}></Route> */}
 
             <Route
               path="/productlist/pageNumber/:pageNumber"
@@ -308,6 +314,14 @@ function App() {
                 </SellerRoute>
               }
             />
+            {/* <Route
+              path="/product/:id/edit"
+              element={
+                <SellerRoute>
+                  <ProductEditScreen />
+                </SellerRoute>
+              }
+            /> */}
 
             <Route path="/" element={<HomeScreen />} exact></Route>
           </Routes>

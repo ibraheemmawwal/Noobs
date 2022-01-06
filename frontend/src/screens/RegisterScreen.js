@@ -89,6 +89,16 @@ export default function RegisterScreen(props) {
         </div>
         <div>
           <label />
+          <div class="col-sm-4">
+            <div class="card social-block">
+              <div class="card-body">
+                <a class="btn btn-block" href="/auth/google" role="button">
+                  <i class="fa fa-google"></i>
+                  Sign In with Google
+                </a>
+              </div>
+            </div>
+          </div>
           <div>
             Already have an account?{' '}
             <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
