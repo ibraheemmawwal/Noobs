@@ -1,13 +1,38 @@
 {
+  "name": "noobs",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibraheemmawwal/Noobs-store.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "14.17.6",
+    "npm": "8.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ibraheemmawwal/Noobs-store/issues"
+  },
+  "homepage": "https://github.com/ibraheemmawwal/Noobs-store#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.2.0",
     "express-session": "^1.17.2",
+    "google-auth-library": "^7.11.0",
     "http": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "mailgun-js": "^0.22.0",
     "mongoose": "^6.0.14",
+    "mongoose-findorcreate": "^3.0.0",
     "multer": "^1.4.3",
     "node": "^14.17.6",
     "passport": "^0.5.2",
@@ -24,5 +49,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.27.1",
     "nodemon": "^2.0.15"
-  }
+  },
+  "description": ""
 }
+
